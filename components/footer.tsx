@@ -1,4 +1,4 @@
-import { Instagram, Facebook, Twitter, Mail } from "lucide-react"
+import { Instagram, Mail } from "lucide-react"
 
 export function Footer() {
   return (
@@ -22,6 +22,11 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a href="#initiative" className="text-white/80 hover:text-maize transition-colors">
+                  FAE Initiative
+                </a>
+              </li>
+              <li>
                 <a href="#events" className="text-white/80 hover:text-maize transition-colors">
                   Events
                 </a>
@@ -42,25 +47,15 @@ export function Footer() {
             <h4 className="text-lg font-semibold text-maize mb-4">Connect With Us</h4>
             <div className="flex gap-4 mb-4">
               <a
-                href="#"
+                href="https://www.instagram.com/michiganbodybuildingclub/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-maize/10 rounded-full flex items-center justify-center hover:bg-maize hover:text-navy transition-all duration-300"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="w-10 h-10 bg-maize/10 rounded-full flex items-center justify-center hover:bg-maize hover:text-navy transition-all duration-300"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-maize/10 rounded-full flex items-center justify-center hover:bg-maize hover:text-navy transition-all duration-300"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:michigan-bodybuilding-club@umich.edu"
+                href="mailto:shinja@umich.edu"
                 className="w-10 h-10 bg-maize/10 rounded-full flex items-center justify-center hover:bg-maize hover:text-navy transition-all duration-300"
               >
                 <Mail className="w-5 h-5" />

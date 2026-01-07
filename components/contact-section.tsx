@@ -26,37 +26,34 @@ export function ContactSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title fade and slide
+      // Title fade
       gsap.from(titleRef.current, {
         scrollTrigger: {
           trigger: titleRef.current,
           start: "top 80%",
         },
         opacity: 0,
-        y: -50,
         duration: 1,
         ease: "power3.out",
       })
 
-      // Form slide from left
+      // Form fade
       gsap.from(formRef.current, {
         scrollTrigger: {
           trigger: formRef.current,
           start: "top 75%",
         },
-        x: -100,
         opacity: 0,
         duration: 1,
         ease: "power3.out",
       })
 
-      // Info slide from right
+      // Info fade
       gsap.from(infoRef.current, {
         scrollTrigger: {
           trigger: infoRef.current,
           start: "top 75%",
         },
-        x: 100,
         opacity: 0,
         duration: 1,
         ease: "power3.out",
@@ -68,7 +65,6 @@ export function ContactSection() {
           trigger: formRef.current,
           start: "top 70%",
         },
-        y: 20,
         opacity: 0,
         stagger: 0.1,
         duration: 0.6,
@@ -143,11 +139,12 @@ export function ContactSection() {
                     className="border-2 focus:border-maize resize-none"
                   />
                 </div>
-                <div className="flex justify-center">
+                
+                {/* <div className="flex justify-center">
                   <Button type="submit" className="bg-maize text-navy hover:bg-maize-glow font-bold text-lg py-6 px-12">
                     Join Now
                   </Button>
-                </div>
+                </div> */}
               </form>
             </CardContent>
           </Card>

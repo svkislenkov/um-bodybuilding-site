@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { useEffect, useRef } from "react"
-import { gsap, SplitText } from "@/lib/gsap-plugins"
+import { gsap } from "@/lib/gsap-plugins"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -15,33 +15,14 @@ export function HeroSection() {
   const buttonsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    gsap.to(bgRef.current, {
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1.5,
-      },
-      y: 300,
-      ease: "none",
+    gsap.from(titleRef.current, {
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
     })
-
-    if (titleRef.current) {
-      const split = new SplitText(titleRef.current, { type: "chars,words" })
-
-      gsap.from(split.chars, {
-        opacity: 0,
-        y: 100,
-        rotateX: -90,
-        stagger: 0.02,
-        duration: 1,
-        ease: "back.out(1.7)",
-      })
-    }
 
     gsap.from(subtitleRef.current, {
       opacity: 0,
-      y: 50,
       duration: 1,
       delay: 0.5,
       ease: "power3.out",
@@ -49,7 +30,6 @@ export function HeroSection() {
 
     gsap.from(buttonsRef.current?.children || [], {
       opacity: 0,
-      y: 30,
       stagger: 0.2,
       duration: 0.8,
       delay: 0.8,

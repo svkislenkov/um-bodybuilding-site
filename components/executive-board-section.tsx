@@ -3,47 +3,37 @@
 import { useEffect, useRef, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { gsap, SplitText } from "@/lib/gsap-plugins"
+import { BoardMember } from "@/types/database"
 
 gsap.registerPlugin()
 
-const boardMembers = [
-  {
-    name: "Jaden Shin",
-    title: "President",
-    email: "shinja@umbc.edu",
-    image: "/bodybuilder.png",
-    bio: "Leading the club with passion for competitive bodybuilding and community building",
-  },
-  {
-    name: "Sergey Kinsekelov",
-    title: "Vice President",
-    email: "",
-    image: "/bodybuilder.png",
-    bio: "",
-  },
-  {
-    name: "Gabe huttmeen",
-    title: "Secretary",
-    email: "",
-    image: "/bodybuilder.png",
-    bio: "",
-  },
-  {
-    name: "billlyyyyyy",
-    title: "Treasurer",
-    email: "",
-    image: "/bodybuilder.png",
-    bio: "",
-  },
-]
-
 export function ExecutiveBoardSection() {
+  const [boardMembers, setBoardMembers] = useState<BoardMember[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const sectionRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const cardsRef = useRef<HTMLDivElement>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   useEffect(() => {
+    async function fetchBoardMembers() {
+      try {
+        const response = await fetch("/api/public/board-members")
+        const data = await response.json()
+        setBoardMembers(data)
+      } catch (error) {
+        console.error("Error fetching board members:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchBoardMembers()
+  }, [])
+
+  useEffect(() => {
+    if (boardMembers.length === 0) return
+
     const ctx = gsap.context(() => {
       if (titleRef.current) {
         const split = new SplitText(titleRef.current, { type: "words" })
@@ -60,27 +50,20 @@ export function ExecutiveBoardSection() {
         })
       }
 
-      gsap.fromTo(cardsRef.current?.children || [],
-        {
-          scale: 0.8,
-          opacity: 0,
+      gsap.from(cardsRef.current?.children || [], {
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: "top 75%",
         },
-        {
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: "top 75%",
-          },
-          scale: 1,
-          opacity: 1,
-          stagger: 0.15,
-          duration: 1,
-          ease: "back.out(1.7)",
-        }
-      )
+        opacity: 0,
+        stagger: 0.15,
+        duration: 1,
+        ease: "power3.out",
+      })
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [boardMembers])
 
   return (
     <section id="board" ref={sectionRef} className="py-24 bg-background">
@@ -96,38 +79,50 @@ export function ExecutiveBoardSection() {
           <div className="h-1 w-24 bg-maize mx-auto" />
         </div>
         <div ref={cardsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 max-w-6xl mx-auto">
-          {boardMembers.map((member, index) => (
-            <Card
-              key={index}
-              className="board-card overflow-hidden group hover:shadow-2xl transition-all duration-300 border-2 hover:border-maize"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <div className="relative h-80 overflow-hidden">
-                <img
-                  src={member.image || "/placeholder.svg"}
-                  alt={member.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div
-                  className={`absolute inset-0 bg-navy/95 transition-opacity duration-300 ${hoveredIndex === index ? "opacity-100" : "opacity-0"}`}
-                >
-                  <div className="h-full flex flex-col justify-center p-6 text-white">
-                    <p className="text-sm leading-relaxed mb-4">{member.bio}</p>
-                    <a href={`mailto:${member.email}`} className="text-maize hover:text-maize-glow text-sm font-medium">
-                      {member.email}
-                    </a>
+          {isLoading ? (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground">Loading board members...</p>
+            </div>
+          ) : boardMembers.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground">No board members found</p>
+            </div>
+          ) : (
+            boardMembers.map((member, index) => (
+              <Card
+                key={member.id}
+                className="board-card overflow-hidden group transition-all duration-300 border-2 hover:border-maize"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <div className="relative h-80 overflow-hidden">
+                  <img
+                    src={member.image_url || "/bodybuilder.png"}
+                    alt={member.name}
+                    className="w-full h-full object-cover transition-transform duration-500"
+                  />
+                  <div
+                    className={`absolute inset-0 bg-navy/95 transition-opacity duration-300 ${hoveredIndex === index ? "opacity-100" : "opacity-0"}`}
+                  >
+                    <div className="h-full flex flex-col justify-center p-6 text-white">
+                      <p className="text-sm leading-relaxed mb-4">{member.bio || ""}</p>
+                      {member.email && (
+                        <a href={`mailto:${member.email}`} className="text-maize hover:text-maize-glow text-sm font-medium">
+                          {member.email}
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <CardContent className="p-6 text-center bg-navy text-white">
-                <h3 className="text-xl font-black mb-1 text-maize" style={{ fontFamily: "var(--font-montserrat)" }}>
-                  {member.name}
-                </h3>
-                <p className="text-sm text-white/80">{member.title}</p>
-              </CardContent>
-            </Card>
-          ))}
+                <CardContent className="p-6 text-center bg-navy text-white">
+                  <h3 className="text-xl font-black mb-1 text-maize" style={{ fontFamily: "var(--font-montserrat)" }}>
+                    {member.name}
+                  </h3>
+                  <p className="text-sm text-white/80">{member.title}</p>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       </div>
     </section>

@@ -1,9 +1,14 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { gsap, SplitText } from "@/lib/gsap-plugins"
+import { useState, useEffect, useRef } from "react"
+import { gsap } from "@/lib/gsap-plugins"
+import { AboutContent, AboutImage } from "@/types/database"
 
 export function AboutSection() {
+  const [paragraphs, setParagraphs] = useState<AboutContent[]>([])
+  const [stats, setStats] = useState<AboutContent[]>([])
+  const [images, setImages] = useState<AboutImage[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const sectionRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const paragraphsRef = useRef<HTMLDivElement>(null)
@@ -11,31 +16,50 @@ export function AboutSection() {
   const imagesRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Title animation with split text
-      if (titleRef.current) {
-        const split = new SplitText(titleRef.current, { type: "chars" })
-        gsap.from(split.chars, {
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: "top 80%",
-          },
-          opacity: 0,
-          x: -50,
-          stagger: 0.05,
-          duration: 0.8,
-          ease: "power3.out",
-        })
-      }
+    async function fetchAboutData() {
+      try {
+        const response = await fetch("/api/public/about")
+        const data = await response.json()
 
-      // Paragraphs fade and slide
+        // Filter content by type
+        const paragraphContent = data.content.filter((item: AboutContent) => item.section_type === "paragraph")
+        const statContent = data.content.filter((item: AboutContent) => item.section_type === "stat")
+
+        setParagraphs(paragraphContent)
+        setStats(statContent)
+        setImages(data.images)
+      } catch (error) {
+        console.error("Error fetching about data:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchAboutData()
+  }, [])
+
+  useEffect(() => {
+    if (isLoading) return
+
+    const ctx = gsap.context(() => {
+      // Title fade-in
+      gsap.from(titleRef.current, {
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: "top 80%",
+        },
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+
+      // Paragraphs fade
       gsap.from(paragraphsRef.current?.children || [], {
         scrollTrigger: {
           trigger: paragraphsRef.current,
           start: "top 75%",
         },
         opacity: 0,
-        y: 50,
         stagger: 0.2,
         duration: 1,
         ease: "power3.out",
@@ -54,24 +78,13 @@ export function AboutSection() {
         stagger: 0.1,
       })
 
+      // Images fade-in
       gsap.from(imagesRef.current?.querySelectorAll("img") || [], {
         scrollTrigger: {
           trigger: imagesRef.current,
           start: "top 80%",
         },
-        scale: 0.8,
         opacity: 0,
-        stagger: 0.15,
-        duration: 1,
-        ease: "power3.out",
-      })
-
-      gsap.to(imagesRef.current?.querySelectorAll("img") || [], {
-        scrollTrigger: {
-          trigger: imagesRef.current,
-          start: "top 80%",
-        },
-        scale: 1.05,
         stagger: 0.15,
         duration: 1,
         ease: "power3.out",
@@ -79,7 +92,7 @@ export function AboutSection() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [isLoading, paragraphs, stats, images])
 
   return (
     <section id="about" ref={sectionRef} className="py-24 bg-background">
@@ -97,71 +110,79 @@ export function AboutSection() {
               <div className="h-1 w-24 bg-maize" />
             </div>
             <div ref={paragraphsRef} className="space-y-4">
-              <p className="text-lg text-foreground/80 leading-relaxed">
-                The University of Michigan Bodybuilding Club is dedicated to fostering a community of athletes committed
-                to excellence in strength training, nutrition, and personal development.
-              </p>
-              <p className="text-lg text-foreground/80 leading-relaxed">
-                Founded in 2025, we bring together students passionate about bodybuilding, powerlifting, and fitness.
-                Whether you're a seasoned competitor or just starting your fitness journey, our club provides the
-                resources, mentorship, and support you need to achieve your goals.
-              </p>
+              {isLoading ? (
+                <p className="text-muted-foreground">Loading...</p>
+              ) : paragraphs.length === 0 ? (
+                <p className="text-muted-foreground">No content available</p>
+              ) : (
+                paragraphs.map((paragraph) => (
+                  <p key={paragraph.id} className="text-lg text-foreground/80 leading-relaxed">
+                    {paragraph.content}
+                  </p>
+                ))
+              )}
             </div>
             <div ref={statsRef} className="grid grid-cols-3 gap-4 pt-4">
-              <div className="text-center">
-                <div
-                  className="stat-number text-4xl font-black text-maize"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
-                >
-                  150
+              {isLoading ? (
+                <div className="col-span-full text-center">
+                  <p className="text-muted-foreground">Loading stats...</p>
                 </div>
-                <div className="text-sm text-muted-foreground">Members</div>
-              </div>
-              <div className="text-center">
-                <div
-                  className="stat-number text-4xl font-black text-maize"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
-                >
-                  20
+              ) : stats.length === 0 ? (
+                <div className="col-span-full text-center">
+                  <p className="text-muted-foreground">No stats available</p>
                 </div>
-                <div className="text-sm text-muted-foreground">Events/Year</div>
-              </div>
-              <div className="text-center">
-                <div
-                  className="stat-number text-4xl font-black text-maize"
-                  style={{ fontFamily: "var(--font-montserrat)" }}
-                >
-                  5
-                </div>
-                <div className="text-sm text-muted-foreground">Competitions</div>
-              </div>
+              ) : (
+                stats.map((stat) => (
+                  <div key={stat.id} className="text-center">
+                    <div
+                      className="stat-number text-4xl font-black text-maize"
+                      style={{ fontFamily: "var(--font-montserrat)" }}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
           <div ref={imagesRef} className="grid grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <img
-                src="/bodybuilder.png"
-                alt="Training"
-                className="w-full h-64 object-cover rounded-lg shadow-lg"
-              />
-              <img
-                src="bodybuilder.png"
-                alt="Equipment"
-                className="w-full h-48 object-cover rounded-lg shadow-lg"
-              />
-            </div>
-            <div className="space-y-4 pt-8">
-              <img
-                src="bodybuilder.png"
-                alt="Competition"
-                className="w-full h-48 object-cover rounded-lg shadow-lg"
-              />
-              <img
-                src="bodybuilder.png"
-                alt="Team"
-                className="w-full h-64 object-cover rounded-lg shadow-lg"
-              />
-            </div>
+            {isLoading ? (
+              <div className="col-span-2 text-center py-12">
+                <p className="text-muted-foreground">Loading images...</p>
+              </div>
+            ) : images.length === 0 ? (
+              <div className="col-span-2 text-center py-12">
+                <p className="text-muted-foreground">No images available</p>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-4">
+                  {images
+                    .filter((_, index) => index % 2 === 0)
+                    .map((image, index) => (
+                      <img
+                        key={image.id}
+                        src={image.image_url}
+                        alt={image.alt_text || "About image"}
+                        className={`w-full object-cover rounded-lg shadow-lg ${index === 0 ? "h-64" : "h-48"}`}
+                      />
+                    ))}
+                </div>
+                <div className="space-y-4 pt-8">
+                  {images
+                    .filter((_, index) => index % 2 === 1)
+                    .map((image, index) => (
+                      <img
+                        key={image.id}
+                        src={image.image_url}
+                        alt={image.alt_text || "About image"}
+                        className={`w-full object-cover rounded-lg shadow-lg ${index === 1 ? "h-64" : "h-48"}`}
+                      />
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -49,6 +49,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "#about", label: "About" },
+    { href: "#initiative", label: "FAE Initiative" },
     { href: "#events", label: "Events" },
     { href: "#board", label: "Board" },
     { href: "#resources", label: "Resources" },
@@ -82,13 +83,13 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Button
+            {/* <Button
               className={`font-bold transition-all duration-300 ${
                 isScrolled ? "bg-navy text-maize hover:bg-navy-dark" : "bg-maize text-navy hover:bg-maize-glow"
               }`}
             >
               Join Now
-            </Button>
+            </Button> */}
           </div>
 
           {/* Mobile Menu Button */}

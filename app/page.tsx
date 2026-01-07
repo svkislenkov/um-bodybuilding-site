@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/hero-section"
 import { AboutSection } from "@/components/about-section"
+import { InitiativeSection } from "@/components/initiative-section"
 import { EventsSection } from "@/components/events-section"
 import { ExecutiveBoardSection } from "@/components/executive-board-section"
 import { ResourcesSection } from "@/components/resources-section"
@@ -15,6 +16,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <AboutSection />
+      <InitiativeSection />
       <EventsSection />
       <ExecutiveBoardSection />
       <ResourcesSection />
