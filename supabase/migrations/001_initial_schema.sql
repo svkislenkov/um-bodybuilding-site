@@ -1,4 +1,4 @@
--- Create tables for UM Bodybuilding Club website
+-- Create tables for UM Strength Network Club website
 
 -- Events table
 CREATE TABLE events (

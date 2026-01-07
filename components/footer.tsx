@@ -7,7 +7,7 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <h3 className="text-2xl font-bold text-maize mb-4" style={{ fontFamily: "var(--font-bebas)" }}>
-              UMBC
+              UMSN
             </h3>
             <p className="text-white/80 leading-relaxed">
               Building strength, discipline, and community at the University of Michigan since 2025.
@@ -47,7 +47,7 @@ export function Footer() {
             <h4 className="text-lg font-semibold text-maize mb-4">Connect With Us</h4>
             <div className="flex gap-4 mb-4">
               <a
-                href="https://www.instagram.com/michiganbodybuildingclub/"
+                href="https://www.instagram.com/umichstrengthnetwork/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-maize/10 rounded-full flex items-center justify-center hover:bg-maize hover:text-navy transition-all duration-300"
@@ -65,6 +65,14 @@ export function Footer() {
         </div>
         <div className="border-t border-white/10 pt-8 text-center text-white/60 text-sm">
           <p>© 2025 University of Michigan Bodybuilding Club. All rights reserved.</p>
+          <div className="mt-4">
+            <a
+              href="/admin/login"
+              className="text-white/40 hover:text-maize transition-colors text-xs"
+            >
+              Admin Login
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -51,7 +51,7 @@ export function HeroSection() {
           className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight leading-tight text-balance text-maize"
           style={{ fontFamily: "var(--font-montserrat)", fontWeight: 900 }}
         >
-          UNIVERSITY OF MICHIGAN BODYBUILDING CLUB
+          UNIVERSITY OF MICHIGAN STRENGTH NETWORK
         </h1>
         <p ref={subtitleRef} className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
           Building strength, discipline, and community since 2025

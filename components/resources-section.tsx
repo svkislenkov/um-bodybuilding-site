@@ -43,26 +43,25 @@ export function ResourcesSection() {
     const ctx = gsap.context(() => {
       // Title fade-in
       gsap.from(titleRef.current, {
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 80%",
-        },
         opacity: 0,
         duration: 0.8,
         ease: "power3.out",
       })
 
       // Cards fade-in
-      gsap.from(cardsRef.current?.children || [], {
-        scrollTrigger: {
-          trigger: cardsRef.current,
-          start: "top 75%",
+      gsap.fromTo(
+        cardsRef.current?.children || [],
+        {
+          opacity: 0,
         },
-        opacity: 0,
-        stagger: 0.1,
-        duration: 1,
-        ease: "power3.out",
-      })
+        {
+          opacity: 1,
+          stagger: 0.1,
+          duration: 1,
+          ease: "power3.out",
+          clearProps: "opacity",
+        }
+      )
     }, sectionRef)
 
     return () => ctx.revert()

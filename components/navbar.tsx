@@ -39,9 +39,9 @@ export function Navbar() {
     const target = document.querySelector(href)
     if (target) {
       gsap.to(window, {
-        duration: 1.5,
+        duration: 0.2,
         scrollTo: { y: target, offsetY: 80 },
-        ease: "power3.inOut",
+        ease: "power1.out",
       })
     }
     setIsMobileMenuOpen(false)
@@ -66,7 +66,7 @@ export function Navbar() {
               isScrolled ? "text-navy" : "text-maize"
             }`}
           >
-            UMBC
+            UMSN
           </a>
 
           {/* Desktop Navigation */}

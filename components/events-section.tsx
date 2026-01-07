@@ -42,10 +42,6 @@ export function EventsSection() {
         titleRef.current.innerHTML = words.map((word) => `<span class="inline-block">${word}</span>`).join(" ")
 
         gsap.from(titleRef.current.children, {
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: "top 80%",
-          },
           y: 50,
           opacity: 0,
           stagger: 0.1,
@@ -56,16 +52,19 @@ export function EventsSection() {
 
       const cards = scrollContainerRef.current?.children
       if (cards && cards.length > 0) {
-        gsap.from(cards, {
-          scrollTrigger: {
-            trigger: scrollContainerRef.current,
-            start: "top 75%",
+        gsap.fromTo(
+          cards,
+          {
+            opacity: 0,
           },
-          opacity: 0,
-          stagger: 0.15,
-          duration: 0.8,
-          ease: "power3.out",
-        })
+          {
+            opacity: 1,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power3.out",
+            clearProps: "opacity",
+          }
+        )
       }
     }, sectionRef)
 

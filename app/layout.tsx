@@ -13,9 +13,13 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "University of Michigan Bodybuilding Club",
+  title: "Michigan Strength Network",
   description: "Building strength, discipline, and community since 2025",
   generator: "v0.app",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
 }
 
 export default function RootLayout({

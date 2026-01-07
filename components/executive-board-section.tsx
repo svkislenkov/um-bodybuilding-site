@@ -38,10 +38,6 @@ export function ExecutiveBoardSection() {
       if (titleRef.current) {
         const split = new SplitText(titleRef.current, { type: "words" })
         gsap.from(split.words, {
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: "top 80%",
-          },
           y: 50,
           opacity: 0,
           stagger: 0.1,
@@ -50,16 +46,19 @@ export function ExecutiveBoardSection() {
         })
       }
 
-      gsap.from(cardsRef.current?.children || [], {
-        scrollTrigger: {
-          trigger: cardsRef.current,
-          start: "top 75%",
+      gsap.fromTo(
+        cardsRef.current?.children || [],
+        {
+          opacity: 0,
         },
-        opacity: 0,
-        stagger: 0.15,
-        duration: 1,
-        ease: "power3.out",
-      })
+        {
+          opacity: 1,
+          stagger: 0.15,
+          duration: 1,
+          ease: "power3.out",
+          clearProps: "opacity",
+        }
+      )
     }, sectionRef)
 
     return () => ctx.revert()

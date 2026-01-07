@@ -43,7 +43,7 @@ export default function LoginPage() {
           <CardTitle className="text-3xl font-black text-navy mb-2" style={{ fontFamily: "var(--font-montserrat)" }}>
             Admin Login
           </CardTitle>
-          <CardDescription>UM Bodybuilding Club Dashboard</CardDescription>
+          <CardDescription>UM Strength Network Club Dashboard</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

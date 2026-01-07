@@ -54,7 +54,7 @@ export default function AdminLayout({
       <aside className="w-64 bg-navy text-white p-6 flex flex-col">
         <div className="mb-8">
           <h1 className="text-2xl font-black text-maize" style={{ fontFamily: "var(--font-montserrat)" }}>
-            UM Bodybuilding
+            UM Strength Network
           </h1>
           <p className="text-sm text-white/60">Admin Dashboard</p>
         </div>

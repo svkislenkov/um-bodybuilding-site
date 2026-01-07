@@ -114,9 +114,18 @@ export function InitiativeSection() {
                   </p>
 
                   <div className="bg-navy/5 p-6 rounded-lg">
-                    <p className="text-sm text-muted-foreground mb-2">In Partnership With:</p>
+                    <p className="text-sm text-muted-foreground mb-2">In Partnership With School of Kinesiology Faculty:</p>
                     <p className="text-base font-medium text-navy">
-                      School of Kinesiology Faculty: Laura Richardson, PhD • Michele Bird, PhD • Angela Fong, PhD • Andrew Pearson, PhD • Celina Furman, PhD
+                      <br />
+                      • Laura Richardson, PhD
+                      <br />
+                      • Michele Bird, PhD
+                      <br />
+                      • Angela Fong, PhD
+                      <br />
+                      • Andrew Pearson, PhD
+                      <br />
+                      • Celina Furman, PhD
                     </p>
                   </div>
                 </div>
@@ -171,7 +180,7 @@ export function InitiativeSection() {
                       Interest Form
                     </a>
                   </Button>
-                  <Button
+                  {/* <Button
                     asChild
                     size="lg"
                     variant="outline"
@@ -184,7 +193,7 @@ export function InitiativeSection() {
                     >
                       Thoughts on new name?
                     </a>
-                  </Button>
+                  </Button> */}
                 </div>
                 <p className="text-sm text-white/60 mt-4">
                   Launching Winter 2026 • No commitment required
