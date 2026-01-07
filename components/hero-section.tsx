@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useRef } from "react"
 import { gsap, SplitText } from "@/lib/gsap-plugins"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { ParticlegroundBackground } from "@/components/particleground-background"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -62,23 +61,6 @@ export function HeroSection() {
   return (
     <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div ref={bgRef} className="absolute inset-0 bg-gradient-to-b from-[#00274C] via-[#003366] to-[#00274C]" />
-
-      <ParticlegroundBackground
-        options={{
-          minSpeedX: 0.02,
-          maxSpeedX: 0.15,
-          minSpeedY: 0.02,
-          maxSpeedY: 0.15,
-          dotColor: '#FFCB05',
-          lineColor: '#FFCB05',
-          particleRadius: 4,
-          lineWidth: 1,
-          density: 12000,
-          proximity: 120,
-          parallax: true,
-          parallaxMultiplier: 3
-        }}
-      />
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.2)_100%)]" />
 
